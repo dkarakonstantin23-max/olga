@@ -817,7 +817,7 @@ async function submitForm(e){
   btn.disabled=true;btn.textContent='Надсилання...';
   const data=new FormData(document.getElementById('anketa'));
   try{
-    const r=await fetch('https://formspree.io/f/xgopvrnn',{method:'POST',body:data,headers:{Accept:'application/json'}});
+    const r=await fetch('https://formspree.io/f/meepooop',{method:'POST',body:data,headers:{Accept:'application/json'}});
     if(r.ok){
       document.getElementById('anketa').style.display='none';
       document.getElementById('form-success').classList.add('show');
