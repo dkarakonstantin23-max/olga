@@ -334,7 +334,7 @@ footer{position:relative;z-index:2;background:var(--black);border-top:1px solid 
     </div>
   </div>
   <div class="hero-img-wrap">
-    <img src="photo_hero.jpg" class="hero-img" alt="Olga Yudkina">
+    <div class="hero-img-placeholder"><span>фото</span></div>
   </div>
 </section>
 
@@ -366,7 +366,7 @@ footer{position:relative;z-index:2;background:var(--black);border-top:1px solid 
     <div class="about-grid">
       <div class="about-img-wrap reveal-left">
         <div class="about-img-box">
-          <img src="photo_about.jpg" alt="Olga Yudkina">
+          <div class="about-img-placeholder"><span>фото</span></div>
         </div>
         <div class="about-stat-badge">
           <strong>30+</strong>
@@ -654,7 +654,7 @@ footer{position:relative;z-index:2;background:var(--black);border-top:1px solid 
   </nav>
   <div class="form-page-wrap">
     <div id="form-content">
-      <img src="photo_form.jpg" class="form-hero-img" alt="Olga Yudkina">
+      <div class="form-hero-placeholder"><span>фото</span></div>
       <h1 class="form-page-title">СТАНЬ ЧАСТИНОЮ<br><span>МОЄЇ КОМАНДИ</span></h1>
       <p class="form-page-sub">Заповніть анкету — і я з вами зв'яжусь найближчим часом 💛</p>
       <form class="anketa-form" id="anketa" onsubmit="submitForm(event)">
@@ -737,7 +737,10 @@ footer{position:relative;z-index:2;background:var(--black);border-top:1px solid 
           <label for="q18">Що для вас важливо в роботі зі мною? <span class="req">*</span></label>
           <textarea id="q18" name="important_in_work" placeholder="Ваша відповідь..." required rows="3"></textarea>
         </div>
-        <input type="hidden" name="_subject" value="Нова анкета — Olga Yudkina LR">
+        <input type="hidden" name="access_key" value="bf16e3fb-5480-43a5-a84f-6756658a9faf">
+        <input type="hidden" name="subject" value="Нова анкета — Olga Yudkina LR">
+        <input type="hidden" name="from_name" value="Olga Yudkina — Сайт">
+        <input type="checkbox" name="botcheck" style="display:none">
         <button type="button" class="form-back-btn" style="align-self:center;margin-top:8px" onclick="goBack()">← Повернутись назад</button>
         <button type="submit" class="form-submit-btn" id="submit-btn">Надіслати анкету ✦</button>
       </form>
@@ -816,9 +819,15 @@ async function submitForm(e){
   const btn=document.getElementById('submit-btn');
   btn.disabled=true;btn.textContent='Надсилання...';
   const data=new FormData(document.getElementById('anketa'));
+  const obj=Object.fromEntries(data);
   try{
-    const r=await fetch('https://formspree.io/f/meepooop',{method:'POST',body:data,headers:{Accept:'application/json'}});
-    if(r.ok){
+    const r=await fetch('https://api.web3forms.com/submit',{
+      method:'POST',
+      headers:{'Content-Type':'application/json','Accept':'application/json'},
+      body:JSON.stringify(obj)
+    });
+    const json=await r.json();
+    if(json.success){
       document.getElementById('anketa').style.display='none';
       document.getElementById('form-success').classList.add('show');
       window.scrollTo(0,0);
