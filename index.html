@@ -116,6 +116,7 @@ nav.scrolled{padding:12px 20px;background:rgba(4,8,10,0.96);box-shadow:0 4px 40p
 /* ABOUT */
 .about-grid{display:grid;grid-template-columns:1fr;gap:36px;align-items:center}
 @media(min-width:768px){.about-grid{grid-template-columns:1fr 1fr;gap:70px}}
+.about-img-wrap{position:relative}
 .about-img-box{position:relative;width:100%;aspect-ratio:3/4;border-radius:20px;overflow:hidden;background:var(--emerald-dark);box-shadow:0 30px 80px rgba(0,0,0,0.5)}
 .about-img-box img{width:100%;height:100%;object-fit:cover;object-position:top}
 .about-img-placeholder{width:100%;height:100%;background:linear-gradient(135deg,var(--emerald-mid),var(--emerald-dark));display:flex;align-items:center;justify-content:center}
@@ -334,7 +335,7 @@ footer{position:relative;z-index:2;background:var(--black);border-top:1px solid 
     </div>
   </div>
   <div class="hero-img-wrap">
-    <div class="hero-img-placeholder"><span>фото</span></div>
+    <img class="hero-img" src="photo_hero.jpg" alt="Olga Yudkina" loading="eager">
   </div>
 </section>
 
@@ -366,7 +367,7 @@ footer{position:relative;z-index:2;background:var(--black);border-top:1px solid 
     <div class="about-grid">
       <div class="about-img-wrap reveal-left">
         <div class="about-img-box">
-          <div class="about-img-placeholder"><span>фото</span></div>
+          <img src="photo_about.jpg" alt="Olga Yudkina" style="width:100%;height:100%;object-fit:cover;object-position:top;">
         </div>
         <div class="about-stat-badge">
           <strong>30+</strong>
@@ -654,7 +655,7 @@ footer{position:relative;z-index:2;background:var(--black);border-top:1px solid 
   </nav>
   <div class="form-page-wrap">
     <div id="form-content">
-      <div class="form-hero-placeholder"><span>фото</span></div>
+      <img class="form-hero-img" src="photo_form.jpg" alt="Olga Yudkina">
       <h1 class="form-page-title">СТАНЬ ЧАСТИНОЮ<br><span>МОЄЇ КОМАНДИ</span></h1>
       <p class="form-page-sub">Заповніть анкету — і я з вами зв'яжусь найближчим часом 💛</p>
       <form class="anketa-form" id="anketa" onsubmit="submitForm(event)">
@@ -754,30 +755,21 @@ footer{position:relative;z-index:2;background:var(--black);border-top:1px solid 
 </div>
 
 <script>
-// LOADER
 window.addEventListener('load',()=>{
   setTimeout(()=>document.getElementById('loader').classList.add('hidden'),1700);
 });
-
-// NAV SCROLL
 window.addEventListener('scroll',()=>{
   document.getElementById('navbar').classList.toggle('scrolled',scrollY>60);
 });
-
-// REVEAL OBSERVER
 const revObs = new IntersectionObserver(entries=>{
   entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('visible');revObs.unobserve(e.target)}});
 },{threshold:.08});
 document.querySelectorAll('.reveal,.reveal-left,.reveal-right').forEach(el=>revObs.observe(el));
-
-// STAGGER DELAYS
 document.querySelectorAll('.formats-wrap .format-block').forEach((c,i)=>c.style.transitionDelay=`${i*.15}s`);
 document.querySelectorAll('.who-grid .who-item').forEach((c,i)=>c.style.transitionDelay=`${i*.06}s`);
 document.querySelectorAll('.finance-grid .finance-card').forEach((c,i)=>c.style.transitionDelay=`${i*.12}s`);
 document.querySelectorAll('.products-grid .prod-item').forEach((c,i)=>c.style.transitionDelay=`${i*.05}s`);
 document.querySelectorAll('.countries-grid .country-item').forEach((c,i)=>c.style.transitionDelay=`${i*.03}s`);
-
-// SMOOTH ANCHOR LINKS
 document.querySelectorAll('a[href^="#"]').forEach(a=>{
   a.addEventListener('click',e=>{
     e.preventDefault();
@@ -785,8 +777,6 @@ document.querySelectorAll('a[href^="#"]').forEach(a=>{
     if(t)t.scrollIntoView({behavior:'smooth'});
   });
 });
-
-// PAGE SWITCH
 function goToAnketa(){
   document.getElementById('page1').classList.add('hidden');
   const p2=document.getElementById('page2');
@@ -796,7 +786,6 @@ function goToAnketa(){
     window.scrollTo({top:0,behavior:'instant'});
     requestAnimationFrame(()=>{
       p2.classList.add('anim-in');
-      // Animate form fields
       p2.querySelectorAll('.form-field').forEach((f,i)=>{
         f.style.opacity='0';f.style.transform='translateY(16px)';
         setTimeout(()=>{
@@ -807,13 +796,11 @@ function goToAnketa(){
     });
   });
 }
-
 function goBack(){
   document.getElementById('page2').classList.remove('active','anim-in');
   document.getElementById('page1').classList.remove('hidden');
   window.scrollTo({top:0,behavior:'instant'});
 }
-
 async function submitForm(e){
   e.preventDefault();
   const btn=document.getElementById('submit-btn');
